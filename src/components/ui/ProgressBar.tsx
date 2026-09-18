@@ -15,19 +15,16 @@ export function ProgressBar({
   return (
     <div className="w-full">
       {label && (
-        <div className="mb-1 flex items-center justify-between text-xs text-[var(--text-muted)]">
+        <div className="mb-0.5 flex items-center justify-between text-[11px]" style={{ color: "var(--text-dim)" }}>
           <span>{label}</span>
           {showPercent && <span>{pct.toFixed(0)}%</span>}
         </div>
       )}
       <div
-        className="w-full overflow-hidden rounded-full bg-[var(--bg-elevated)]"
-        style={{ height, border: "1px solid var(--panel-border)" }}
+        className="w-full overflow-hidden"
+        style={{ height, background: "var(--bg-deep)", border: "1px solid var(--border)" }}
       >
-        <div
-          className="h-full rounded-full transition-all duration-500 ease-out"
-          style={{ width: `${pct}%`, background: color }}
-        />
+        <div className="h-full transition-all duration-500 ease-out" style={{ width: `${pct}%`, background: color }} />
       </div>
     </div>
   );

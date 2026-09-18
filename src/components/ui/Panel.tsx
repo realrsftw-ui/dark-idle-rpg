@@ -14,19 +14,14 @@ export function Panel({
   bare?: boolean;
 }) {
   return (
-    <section className={className}>
+    <div className={className}>
       {title && (
-        <div
-          className="mb-3 flex items-end justify-between pb-2"
-          style={{ borderBottom: "1px solid var(--panel-border)" }}
-        >
-          <h2 className="section-title" style={{ color: "var(--gold)" }}>
-            {title}
-          </h2>
+        <div className="retro-header flex items-center justify-between">
+          <span>{title}</span>
           {right}
         </div>
       )}
-      {bare ? children : <div className="flex flex-col gap-3">{children}</div>}
-    </section>
+      <div className="retro-panel p-2">{bare ? children : <div className="flex flex-col">{children}</div>}</div>
+    </div>
   );
 }

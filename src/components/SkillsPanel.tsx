@@ -20,31 +20,24 @@ export function SkillsPanel() {
   if (!character) return null;
 
   return (
-    <Panel title="Färdigheter">
-      <div className="flex flex-col gap-3">
-        {SKILL_ORDER.map((id) => {
-          const def = SKILLS[id];
-          const progress = skillProgress(character, id);
-          const maxed = progress.level >= MAX_LEVEL;
-          return (
-            <div key={id} className="flex gap-2.5">
-              <div className="w-[3px] shrink-0 rounded-none" style={{ background: SKILL_COLOR[id] }} />
-              <div className="flex-1">
-                <div className="mb-1 flex items-baseline justify-between">
-                  <span className="text-sm" style={{ color: "var(--text)" }}>
-                    {def.name}
-                  </span>
-                  <span className="font-mono-num text-xs" style={{ color: "var(--text-muted)" }}>
-                    {progress.level}
-                    {maxed ? "" : ` · ${progress.xp.toLocaleString("sv-SE")}`}
-                  </span>
-                </div>
-                <ProgressBar fraction={maxed ? 1 : progress.fraction} color={SKILL_COLOR[id]} height={5} />
-              </div>
+    <Panel title="FÄRDIGHETER">
+      {SKILL_ORDER.map((id) => {
+        const def = SKILLS[id];
+        const progress = skillProgress(character, id);
+        const maxed = progress.level >= MAX_LEVEL;
+        return (
+          <div key={id} className="retro-row py-1.5">
+            <div className="flex items-baseline justify-between">
+              <span style={{ color: "var(--text)" }}>{def.name}</span>
+              <span className="text-[11px]" style={{ color: "var(--text-dim)" }}>
+                Nivå {progress.level}
+                {maxed ? "" : ` (${progress.xp.toLocaleString("sv-SE")} exp)`}
+              </span>
             </div>
-          );
-        })}
-      </div>
+            <ProgressBar fraction={maxed ? 1 : progress.fraction} color={SKILL_COLOR[id]} height={4} />
+          </div>
+        );
+      })}
     </Panel>
   );
 }

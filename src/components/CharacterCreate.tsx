@@ -36,82 +36,74 @@ export function CharacterCreate() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-lg flex-col justify-center px-6 py-10">
-      <div className="mb-8 text-center">
-        <div className="font-display text-2xl tracking-[0.14em]" style={{ color: "var(--gold)" }}>
+    <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4 py-8">
+      <div className="mb-4 text-center">
+        <div className="text-lg font-bold" style={{ color: "var(--yellow)" }}>
           ASKMÖRKER
         </div>
-        <p className="mt-3 text-sm italic" style={{ color: "var(--text-muted)" }}>
+        <p className="mt-1 text-[12px] italic" style={{ color: "var(--text-dim)" }}>
           Fördela dina grundattribut innan du kliver ner i mörkret.
         </p>
       </div>
 
-      <div className="rule mb-6" />
+      <div className="retro-panel">
+        <div className="retro-header">SKAPA KARAKTÄR</div>
+        <div className="p-3">
+          <label className="label-caps mb-1 block">Namn</label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={20}
+            placeholder="Vaelith Nattskugga"
+            className="mb-3 w-full px-2 py-1.5 outline-none"
+            style={{ background: "var(--bg-deep)", border: "1px solid var(--border)", color: "var(--text)" }}
+          />
 
-      <label className="label-caps mb-2 block">Namn</label>
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        maxLength={20}
-        placeholder="Vaelith Nattskugga"
-        className="mb-7 w-full border-b bg-transparent pb-2 text-lg outline-none"
-        style={{ borderColor: "var(--panel-border)", color: "var(--text)", fontFamily: "var(--font-body)" }}
-      />
+          <div className="retro-row flex items-center justify-between py-1.5">
+            <span className="label-caps">Poäng kvar</span>
+            <span style={{ color: remaining === 0 ? "var(--yellow)" : "var(--text)" }}>{remaining}</span>
+          </div>
 
-      <div className="mb-3 flex items-center justify-between">
-        <span className="label-caps">Poäng kvar</span>
-        <span className="font-mono-num text-sm" style={{ color: remaining === 0 ? "var(--gold)" : "var(--text)" }}>
-          {remaining}
-        </span>
-      </div>
-
-      <div className="flex flex-col">
-        {STAT_INFO.map((s, i) => (
-          <div key={s.id}>
-            {i > 0 && <div className="rule-full" />}
-            <div className="flex items-center justify-between py-3">
+          {STAT_INFO.map((s) => (
+            <div key={s.id} className="retro-row flex items-center justify-between py-1.5">
               <div>
-                <div className="text-sm" style={{ color: "var(--text)" }}>
-                  {s.name}
-                </div>
-                <div className="text-xs italic" style={{ color: "var(--text-faint)" }}>
+                <div>{s.name}</div>
+                <div className="text-[11px] italic" style={{ color: "var(--text-faint)" }}>
                   {s.desc}
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => adjust(s.id, -1)}
                   disabled={stats[s.id] <= STAT_BASE}
-                  className="font-display text-lg disabled:opacity-20"
-                  style={{ color: "var(--text-muted)" }}
+                  className="w-5 font-bold disabled:opacity-20"
+                  style={{ color: "var(--text-dim)" }}
                 >
                   −
                 </button>
-                <span className="font-mono-num w-6 text-center text-lg">{stats[s.id]}</span>
+                <span className="w-5 text-center">{stats[s.id]}</span>
                 <button
                   onClick={() => adjust(s.id, 1)}
                   disabled={stats[s.id] >= STAT_MAX || remaining <= 0}
-                  className="font-display text-lg disabled:opacity-20"
-                  style={{ color: "var(--gold)" }}
+                  className="w-5 font-bold disabled:opacity-20"
+                  style={{ color: "var(--yellow)" }}
                 >
                   +
                 </button>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+
+          <button
+            onClick={handleSubmit}
+            disabled={!name.trim()}
+            className="mt-3 w-full py-2 text-center font-bold disabled:opacity-30"
+            style={{ background: "var(--panel-header)", border: "1px solid var(--border)", color: "var(--yellow)" }}
+          >
+            Kliv in i mörkret
+          </button>
+        </div>
       </div>
-
-      <div className="rule my-7" />
-
-      <button
-        onClick={handleSubmit}
-        disabled={!name.trim()}
-        className="section-title w-full border py-3 text-center transition disabled:opacity-30"
-        style={{ borderColor: "var(--gold)", color: "var(--gold-bright)" }}
-      >
-        Kliv in i mörkret
-      </button>
     </div>
   );
 }
