@@ -83,6 +83,15 @@ export interface ZoneDef {
   monsterIds: string[];
 }
 
+export interface RegionDef {
+  id: string;
+  name: string;
+  emoji: string;
+  description: string;
+  requiredCombatLevel: number;
+  zoneIds: string[];
+}
+
 export interface TrainingSpotDef {
   id: string;
   skillId: SkillId;

@@ -15,7 +15,7 @@ import { WelcomeBackModal } from "@/components/WelcomeBackModal";
 type Tab = "zones" | "training" | "inventory" | "shop";
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
-  { id: "zones", label: "Zoner", emoji: "🗺️" },
+  { id: "zones", label: "Karta", emoji: "🗺️" },
   { id: "training", label: "Träning", emoji: "⛏️" },
   { id: "inventory", label: "Inventarie", emoji: "🎒" },
   { id: "shop", label: "Butik", emoji: "🏪" },

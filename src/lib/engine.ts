@@ -31,7 +31,7 @@ export type GameEvent =
   | { type: "gather"; itemId: string; itemName: string; qty: number; skillName: string; xp: number }
   | { type: "gold"; amount: number };
 
-function combatLevel(character: Character): number {
+export function combatLevel(character: Character): number {
   const { attack, strength, defense } = character.skills;
   return Math.round((attack.level + strength.level + defense.level) / 3);
 }
