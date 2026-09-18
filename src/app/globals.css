@@ -35,8 +35,8 @@
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
 * {
@@ -50,11 +50,48 @@ body {
 }
 
 body {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 16px;
   background-image:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(123, 92, 255, 0.08), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(163, 40, 61, 0.06), transparent);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(123, 92, 255, 0.06), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(163, 40, 61, 0.05), transparent);
   min-height: 100vh;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0.04em;
+}
+
+.font-mono-num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-feature-settings: "tnum";
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--panel-border) 45%, transparent 100%);
+  opacity: 0.6;
+}
+
+.rule-full {
+  height: 1px;
+  background: var(--panel-border);
+}
+
+.section-title {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.label-caps {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: var(--text-faint);
 }
 
 ::selection {

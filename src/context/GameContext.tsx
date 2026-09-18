@@ -43,7 +43,7 @@ let logIdCounter = 1;
 function formatEvent(ev: GameEvent): { message: string; kind: LogEntry["kind"] } {
   switch (ev.type) {
     case "spawn":
-      return { message: `${ev.emoji} ${ev.monsterName} dyker upp ur mörkret.`, kind: "info" };
+      return { message: `${ev.monsterName} dyker upp ur mörkret.`, kind: "info" };
     case "player_hit":
       return { message: `Du träffar ${ev.monsterName} för ${ev.damage} skada.`, kind: "damage" };
     case "player_miss":

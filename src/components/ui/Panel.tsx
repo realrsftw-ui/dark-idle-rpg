@@ -2,35 +2,31 @@ import { ReactNode } from "react";
 
 export function Panel({
   title,
-  icon,
   children,
   className = "",
   right,
+  bare = false,
 }: {
   title?: string;
-  icon?: string;
   children: ReactNode;
   className?: string;
   right?: ReactNode;
+  bare?: boolean;
 }) {
   return (
-    <div
-      className={`rounded-lg border bg-[var(--panel)] shadow-[0_0_0_1px_rgba(0,0,0,0.3)] ${className}`}
-      style={{ borderColor: "var(--panel-border)" }}
-    >
+    <section className={className}>
       {title && (
         <div
-          className="flex items-center justify-between border-b px-4 py-2.5"
-          style={{ borderColor: "var(--panel-border)" }}
+          className="mb-3 flex items-end justify-between pb-2"
+          style={{ borderBottom: "1px solid var(--panel-border)" }}
         >
-          <h2 className="flex items-center gap-2 text-sm font-semibold tracking-wide text-[var(--gold)]">
-            {icon && <span>{icon}</span>}
+          <h2 className="section-title" style={{ color: "var(--gold)" }}>
             {title}
           </h2>
           {right}
         </div>
       )}
-      <div className="p-4">{children}</div>
-    </div>
+      {bare ? children : <div className="flex flex-col gap-3">{children}</div>}
+    </section>
   );
 }

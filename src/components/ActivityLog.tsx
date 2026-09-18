@@ -23,8 +23,8 @@ export function ActivityLog() {
   }, [log.length]);
 
   return (
-    <Panel title="Händelselogg" icon="📜">
-      <div className="flex h-56 flex-col gap-1 overflow-y-auto pr-1 font-mono text-xs leading-relaxed">
+    <Panel title="Händelselogg" bare>
+      <div className="flex h-56 flex-col gap-1 overflow-y-auto pr-1 font-mono-num text-xs leading-relaxed">
         {log.length === 0 && <div className="text-[var(--text-faint)]">Ingen aktivitet ännu...</div>}
         {log.map((entry) => (
           <div key={entry.id} style={{ color: KIND_COLOR[entry.kind] }}>

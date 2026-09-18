@@ -10,39 +10,52 @@ export function Header() {
   const maxHp = computeMaxHp(character);
 
   return (
-    <header
-      className="sticky top-0 z-20 border-b backdrop-blur"
-      style={{ borderColor: "var(--panel-border)", background: "rgba(10,9,16,0.9)" }}
-    >
-      <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
-        <div className="text-xl">🕯️</div>
-        <div className="flex-1">
-          <div className="flex items-baseline gap-2">
-            <span className="font-semibold text-[var(--gold)]">{character.name}</span>
-            <span className="text-xs text-[var(--text-faint)]">
-              {character.deaths} dödsfall
-            </span>
+    <header style={{ borderBottom: "1px solid var(--panel-border)", background: "var(--bg)" }}>
+      <div className="mx-auto flex max-w-5xl items-center gap-6 px-4 py-4">
+        <div>
+          <div className="font-display text-lg tracking-[0.12em]" style={{ color: "var(--gold)" }}>
+            ASKMÖRKER
           </div>
-          <div className="mt-1 max-w-xs">
+        </div>
+
+        <div className="h-8 w-px shrink-0" style={{ background: "var(--panel-border)" }} />
+
+        <div className="flex-1">
+          <div className="flex items-baseline gap-3">
+            <span className="font-display text-base" style={{ color: "var(--text)" }}>
+              {character.name}
+            </span>
+            {character.deaths > 0 && (
+              <span className="label-caps" style={{ color: "var(--blood)" }}>
+                {character.deaths} fall
+              </span>
+            )}
+          </div>
+          <div className="mt-1.5 max-w-xs">
             <ProgressBar
               fraction={character.hp / maxHp}
               color="linear-gradient(90deg, var(--hp), var(--hp-bright))"
-              height={8}
+              height={6}
             />
-            <div className="mt-0.5 text-[11px] text-[var(--text-muted)]">
+            <div className="mt-1 font-mono-num text-[11px]" style={{ color: "var(--text-muted)" }}>
               {character.hp} / {maxHp} HP
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm" style={{ borderColor: "var(--panel-border)" }}>
-          <span>🪙</span>
-          <span className="font-mono font-semibold text-[var(--gold)]">{character.gold}</span>
+
+        <div className="text-right">
+          <div className="label-caps">Guld</div>
+          <div className="font-mono-num text-lg" style={{ color: "var(--gold-bright)" }}>
+            {character.gold}
+          </div>
         </div>
+
         <button
           onClick={() => {
             if (confirm("Radera karaktär och börja om? Detta kan inte ångras.")) resetGame();
           }}
-          className="text-xs text-[var(--text-faint)] hover:text-[var(--blood-bright)]"
+          className="label-caps hover:opacity-100"
+          style={{ opacity: 0.6 }}
         >
           Nollställ
         </button>
