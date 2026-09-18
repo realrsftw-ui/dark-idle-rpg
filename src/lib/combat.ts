@@ -24,13 +24,13 @@ export function getCombatBonuses(character: Character): CombatBonuses {
 export function playerAccuracy(character: Character): number {
   const attackLevel = getSkillLevel(character, "attack");
   const bonuses = getCombatBonuses(character);
-  return attackLevel * 2 + character.stats.dex + bonuses.attack;
+  return attackLevel * 3 + character.stats.dex + bonuses.attack;
 }
 
 export function playerMaxHit(character: Character): number {
   const strengthLevel = getSkillLevel(character, "strength");
   const bonuses = getCombatBonuses(character);
-  return Math.max(1, Math.floor(strengthLevel / 2 + character.stats.str / 4 + bonuses.strengthDmg));
+  return Math.max(2, Math.floor(strengthLevel * 0.7 + character.stats.str * 0.6 + bonuses.strengthDmg));
 }
 
 export function playerDefenseRating(character: Character): number {

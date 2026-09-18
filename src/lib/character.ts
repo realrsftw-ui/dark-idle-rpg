@@ -32,7 +32,7 @@ export function createCharacter(name: string, stats: StatBlock): Character {
 
 export function computeMaxHp(character: Character): number {
   const defenseLevel = character.skills.defense?.level ?? 1;
-  return 20 + character.stats.vit * 5 + defenseLevel * 2;
+  return 10 + character.stats.vit * 2 + defenseLevel;
 }
 
 export function computeMaxMana(character: Character): number {
