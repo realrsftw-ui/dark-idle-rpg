@@ -10,9 +10,10 @@ import {
   removeItem,
   unequipItem as doUnequip,
 } from "@/lib/character";
-import { GameEvent, TICK_MS, processTick, simulateOfflineTicks } from "@/lib/engine";
+import { GameEvent, TICK_MS, combatLevel, processTick, simulateOfflineTicks } from "@/lib/engine";
 import { loadSaveGame, writeSaveGame, SAVE_VERSION, clearSaveGame } from "@/lib/saveGame";
-import { Activity, ActivityType, Character, EquipSlot, LogEntry, OfflineSummary, StatBlock } from "@/lib/types";
+import { SPAWN, WILDERNESS_MIN_COMBAT_LEVEL, clampToGrid, isSafeZone } from "@/data/worldMap";
+import { Activity, ActivityType, Character, EquipSlot, LogEntry, OfflineSummary, Position, StatBlock } from "@/lib/types";
 
 interface GameState {
   status: "loading" | "no-character" | "ready";
@@ -29,6 +30,7 @@ type Action =
   | { type: "SET_ACTIVITY"; activity: Activity }
   | { type: "TICK"; character: Character; activity: Activity; entries: LogEntry[] }
   | { type: "APPLY_CHARACTER"; character: Character }
+  | { type: "MOVE"; character: Character; clearActivity: boolean; entries: LogEntry[] }
   | { type: "SHOW_OFFLINE_SUMMARY"; summary: OfflineSummary }
   | { type: "DISMISS_OFFLINE_SUMMARY" }
   | { type: "RESET" };
@@ -96,6 +98,13 @@ function reducer(state: GameState, action: Action): GameState {
       };
     case "APPLY_CHARACTER":
       return { ...state, character: action.character };
+    case "MOVE":
+      return {
+        ...state,
+        character: action.character,
+        activity: action.clearActivity ? null : state.activity,
+        log: [...state.log, ...action.entries].slice(-LOG_LIMIT),
+      };
     case "SHOW_OFFLINE_SUMMARY":
       return { ...state, offlineSummary: action.summary };
     case "DISMISS_OFFLINE_SUMMARY":
@@ -111,6 +120,7 @@ interface GameContextValue extends GameState {
   createCharacter: (name: string, stats: StatBlock) => void;
   startCombat: (zoneId: string) => void;
   startTraining: (spotId: string) => void;
+  move: (dx: number, dy: number) => void;
   equip: (itemId: string, slot: EquipSlot) => void;
   unequip: (slot: EquipSlot) => void;
   buyItem: (itemId: string) => void;
@@ -145,6 +155,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     let character = save.character;
     let activity = save.activity;
     const log: LogEntry[] = [];
+
+    if (!character.position) {
+      character = { ...character, position: { ...SPAWN } };
+    }
 
     if (activity) {
       const elapsedMs = Date.now() - activity.lastProcessedAt;
@@ -213,6 +227,48 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const startCombat = useCallback((zoneId: string) => startActivity("combat", zoneId), [startActivity]);
   const startTraining = useCallback((spotId: string) => startActivity("training", spotId), [startActivity]);
 
+  const move = useCallback((dx: number, dy: number) => {
+    const character = stateRef.current.character;
+    if (!character) return;
+    const current: Position = character.position;
+    const target = clampToGrid({ x: current.x + dx, y: current.y + dy });
+    if (target.x === current.x && target.y === current.y) return;
+
+    if (!isSafeZone(target) && combatLevel(character) < WILDERNESS_MIN_COMBAT_LEVEL) {
+      dispatch({
+        type: "MOVE",
+        character,
+        clearActivity: false,
+        entries: [
+          {
+            id: logIdCounter++,
+            message: `Vildmarken känns för farlig ännu — du behöver stridsnivå ${WILDERNESS_MIN_COMBAT_LEVEL} för att våga dig längre ut.`,
+            kind: "info",
+            timestamp: Date.now(),
+          },
+        ],
+      });
+      return;
+    }
+
+    const wasActive = !!stateRef.current.activity;
+    dispatch({
+      type: "MOVE",
+      character: { ...character, position: target },
+      clearActivity: wasActive,
+      entries: wasActive
+        ? [
+            {
+              id: logIdCounter++,
+              message: "Du bryter upp och beger dig vidare.",
+              kind: "info",
+              timestamp: Date.now(),
+            },
+          ]
+        : [],
+    });
+  }, []);
+
   const canEquip = useCallback(
     (itemId: string) => {
       const character = stateRef.current.character;
@@ -266,6 +322,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     createCharacter,
     startCombat,
     startTraining,
+    move,
     equip,
     unequip,
     buyItem,

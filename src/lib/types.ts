@@ -83,6 +83,13 @@ export interface ZoneDef {
   monsterIds: string[];
 }
 
+export type WorldCellType = "zone" | "training" | "empty";
+
+export interface WorldCell {
+  type: WorldCellType;
+  id?: string; // zoneId or trainingSpotId, absent for empty cells
+}
+
 export interface RegionDef {
   id: string;
   name: string;
@@ -119,6 +126,11 @@ export interface Activity {
   trainingProgressTicks?: number; // ticks accumulated toward current training action
 }
 
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export interface Character {
   name: string;
   stats: StatBlock;
@@ -129,6 +141,7 @@ export interface Character {
   equipment: Record<EquipSlot, string | null>;
   deaths: number;
   createdAt: number;
+  position: Position;
 }
 
 export interface LogEntry {

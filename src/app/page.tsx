@@ -6,17 +6,15 @@ import { CharacterCreate } from "@/components/CharacterCreate";
 import { Header } from "@/components/Header";
 import { SkillsPanel } from "@/components/SkillsPanel";
 import { ActivityLog } from "@/components/ActivityLog";
-import { CombatPanel } from "@/components/CombatPanel";
-import { TrainingPanel } from "@/components/TrainingPanel";
+import { WorldExplorer } from "@/components/WorldExplorer";
 import { InventoryPanel } from "@/components/InventoryPanel";
 import { ShopPanel } from "@/components/ShopPanel";
 import { WelcomeBackModal } from "@/components/WelcomeBackModal";
 
-type Tab = "zones" | "training" | "inventory" | "shop";
+type Tab = "zones" | "inventory" | "shop";
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
   { id: "zones", label: "Karta", emoji: "🗺️" },
-  { id: "training", label: "Träning", emoji: "⛏️" },
   { id: "inventory", label: "Inventarie", emoji: "🎒" },
   { id: "shop", label: "Butik", emoji: "🏪" },
 ];
@@ -60,8 +58,7 @@ function MainGame() {
             ))}
           </nav>
 
-          {tab === "zones" && <CombatPanel />}
-          {tab === "training" && <TrainingPanel />}
+          {tab === "zones" && <WorldExplorer />}
           {tab === "inventory" && <InventoryPanel />}
           {tab === "shop" && <ShopPanel />}
         </div>

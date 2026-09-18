@@ -1,4 +1,5 @@
 import { SKILL_ORDER } from "@/data/skills";
+import { SPAWN } from "@/data/worldMap";
 import { Character, EquipSlot, InventoryStack, SkillId, StatBlock } from "@/lib/types";
 import { levelForXp, xpProgress } from "@/lib/expCurve";
 
@@ -25,6 +26,7 @@ export function createCharacter(name: string, stats: StatBlock): Character {
     equipment: { weapon: null, shield: null, head: null, body: null, legs: null, hands: null },
     deaths: 0,
     createdAt: Date.now(),
+    position: { ...SPAWN },
   };
   character.hp = computeMaxHp(character);
   return character;
